@@ -1,0 +1,97 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Odoo: Start server",
+      "detail": "Run odoo-bin with conf/odoo.conf (no debugger, auto-reload)",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "${workspaceFolder}/odoo-18.0/odoo-bin",
+        "-c",
+        "${workspaceFolder}/conf/odoo.conf",
+        "--dev=reload"
+      ],
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Odoo: Init/Update database",
+      "detail": "Create the database if missing and install 'base'",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "${workspaceFolder}/odoo-18.0/odoo-bin",
+        "-c",
+        "${workspaceFolder}/conf/odoo.conf",
+        "-d",
+        "${input:dbName}",
+        "-i",
+        "base",
+        "--stop-after-init"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Odoo: Update module",
+      "detail": "Upgrade one or more modules (comma separated)",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "${workspaceFolder}/odoo-18.0/odoo-bin",
+        "-c",
+        "${workspaceFolder}/conf/odoo.conf",
+        "-d",
+        "${input:dbName}",
+        "-u",
+        "${input:moduleName}",
+        "--stop-after-init"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Odoo: Install module",
+      "detail": "Install one or more modules (comma separated)",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "${workspaceFolder}/odoo-18.0/odoo-bin",
+        "-c",
+        "${workspaceFolder}/conf/odoo.conf",
+        "-d",
+        "${input:dbName}",
+        "-i",
+        "${input:moduleName}",
+        "--stop-after-init"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "pip: Install Odoo requirements",
+      "detail": "Install odoo-18.0/requirements.txt into .venv",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/pip",
+      "args": [
+        "install",
+        "-r",
+        "${workspaceFolder}/odoo-18.0/requirements.txt"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "dbName",
+      "type": "promptString",
+      "description": "Odoo database name",
+      "default": "odoo18"
+    },
+    {
+      "id": "moduleName",
+      "type": "promptString",
+      "description": "Module technical name(s), comma separated",
+      "default": "base"
+    }
+  ]
+}
